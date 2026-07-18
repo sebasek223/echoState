@@ -273,10 +273,13 @@ document.addEventListener('DOMContentLoaded', () => {
             if (isPlayingSound) {
                 startSound(soundSelect ? soundSelect.value : 'drone');
                 if (soundIcon) soundIcon.setAttribute('data-lucide', 'volume-2');
+                soundToggleBtn.setAttribute('aria-pressed', 'true');
+
                 soundToggleBtn.classList.add('active');
             } else {
                 stopSound();
                 if (soundIcon) soundIcon.setAttribute('data-lucide', 'volume-x');
+                soundToggleBtn.setAttribute('aria-pressed', 'false');
                 soundToggleBtn.classList.remove('active');
             }
             if (window.lucide) window.lucide.createIcons();

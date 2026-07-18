@@ -122,8 +122,21 @@ body {
 
 .logo-icon {
     color: var(--accent-purple);
-    filter: drop-shadow(0 0 8px rgba(139, 92, 246, 0.5));
+    filter: drop-shadow(0 0 10px rgba(139, 92, 246, 0.65));
+    transform: translateY(1px);
 }
+
+.logo-icon {
+    width: 1.2em;
+    height: 1.2em;
+}
+
+.logo {
+    font-size: 1.7rem;
+    letter-spacing: -0.04em;
+    text-shadow: 0 0 18px rgba(139, 92, 246, 0.35);
+}
+
 
 .header-left {
     display: flex;
