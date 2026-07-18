@@ -135,31 +135,30 @@ body {
     font-size: 1.5rem;
     font-weight: 700;
     letter-spacing: -0.03em;
-    color: #ffffff;      /* Nastav bílou barvu nebo tvou hlavní barvu textu */
-    background: none
-        /* Tímto odstraníš ten fialový obdélník */
+    color: #ffffff;
+    background: none; /* Tímto odstraníš ten fialový obdélník */
 }
-/* Tlačítko se zvukem - sjednocené styly */
+
+/* Tlačítko se zvukem - stabilní a vždy klikatelné */
 #soundToggle {
     display: flex !important;
     align-items: center;
     justify-content: center;
     background: none;
     border: none;
-    cursor: pointer;
+    cursor: pointer !important;
+    pointer-events: auto !important;
     color: var(--text-secondary);
     visibility: visible !important;
     opacity: 1 !important;
+    padding: 5px;
+    position: relative;
+    z-index: 9999;
 }
 
-/* Když tlačítko HRAJE (má třídu .active), schováme křížek */
-#soundToggle.active [data-lucide="volume-x"] {
-    display: none !important;
-}
-
-/* Když tlačítko NEHRAJE (nemá třídu .active), schováme ikonu hlasitosti */
-#soundToggle:not(.active) [data-lucide="volume-2"] {
-    display: none !important;
+#soundToggle:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(192, 132, 252, 0.35);
 }
 
 /* Vynucení zobrazení šipky v selectu/tlačítku */
@@ -173,7 +172,7 @@ body {
 .logo-text { /* Obal svůj text v HTML do <span class="logo-text">Oáza</span> */
     background: var(--gradient-primary);
     -webkit-background-clip: text;
-    background-clip: text; /* Tady už to bude v pořádku */
+    background-clip: text;
     -webkit-text-fill-color: transparent;
 }
 .logo-icon {
@@ -191,55 +190,10 @@ body {
     border: 1px solid var(--card-border);
     border-radius: 12px;
     padding: 0.4rem 0.8rem;
-    gap: 0.8rem; /* Mírně zvětšeno */
-    position: relative; /* Přidáno */
-    z-index: 10;        /* Aby bylo nad ostatními prvky */
-}
-
-/* Základní vzhled tlačítka - vždy viditelné */
-#soundToggle {
-    display: flex !important;
-    align-items: center;
-    justify-content: center;
-    background: none;
-    border: none;
-    cursor: pointer !important;
-    pointer-events: auto !important;
-    color: var(--text-secondary);
-    visibility: visible !important;
-    opacity: 1 !important;
-    padding: 5px;
-}
-
-/* Když HRAJE (.active), skryjeme křížek, ukážeme hlasitost */
-#soundToggle.active [data-lucide="volume-x"] {
-    display: none !important;
-}
-
-#soundToggle.active [data-lucide="volume-2"] {
-    display: block !important;
-}
-
-/* Když NEHRAJE, ukážeme křížek, skryjeme hlasitost */
-#soundToggle:not(.active) [data-lucide="volume-x"] {
-    display: block !important;
-}
-
-#soundToggle:not(.active) [data-lucide="volume-2"] {
-    display: none !important;
-}
-
-/* Zabránění přebíjení a zajištění klikatelnosti */
-#soundToggle {
+    gap: 0.8rem;
     position: relative;
-    z-index: 9999;
+    z-index: 10;
 }
-
-#soundToggle:focus {
-    outline: none;
-    box-shadow: 0 0 0 3px rgba(192, 132, 252, 0.35);
-}
-
 
 .sound-control-group i {
     font-size: 1rem;

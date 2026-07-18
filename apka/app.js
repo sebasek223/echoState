@@ -256,42 +256,50 @@ document.addEventListener('DOMContentLoaded', () => {
         soundOscillators.push(noise);
     }
 
-// Musíme získat element podle správného ID z tvého HTML
-const soundToggleBtn = document.getElementById('soundToggle'); 
-const soundSelect = document.getElementById('soundSelect');
-const soundIcon = document.getElementById('soundIcon');
-let isPlayingSound = false; // Ujisti se, že máš tuto proměnnou definovanou
+// Sound toggle (stabilní přepínání + resume + lucide refresh)
+function updateSoundIcon(isOn) {
+    if (!soundIcon) return;
+    soundIcon.setAttribute('data-lucide', isOn ? 'volume-2' : 'volume-x');
+    if (window.lucide) window.lucide.createIcons();
+}
+
+function stopSoundSafe() {
+    try {
+        stopSound(false);
+    } catch (e) {
+        // fallback: pokud stopSound neexistuje/selže
+        try {
+            soundOscillators.forEach(n => {
+                try { n.stop?.(); } catch (_) {}
+            });
+        } catch (_) {}
+        soundOscillators = [];
+        if (masterGain && audioCtx) masterGain.gain.value = 0;
+    }
+}
 
 if (soundToggleBtn) {
-    soundToggleBtn.addEventListener('click', () => {
+    soundToggleBtn.addEventListener('click', async () => {
         isPlayingSound = !isPlayingSound;
-        
-        if (isPlayingSound) {
-            // Spustí zvuk podle vybrané hodnoty v selectu
-            startSound(soundSelect ? soundSelect.value : 'drone');
-            soundToggleBtn.classList.add('active');
-            
-            // Změna ikony na volume-2
-            if (soundIcon) {
-                soundIcon.setAttribute('data-lucide', 'volume-2');
-            }
-        } else {
-            // Zastaví zvuk
-            stopSound();
-            soundToggleBtn.classList.remove('active');
-            
-            // Změna ikony na volume-x
-            if (soundIcon) {
-                soundIcon.setAttribute('data-lucide', 'volume-x');
-            }
+
+        // Kritické: resume audioCtx před jakýmkoli startem (mobile/Safari)
+        initAudio();
+        if (audioCtx && audioCtx.state === 'suspended') {
+            try { await audioCtx.resume(); } catch (e) {}
         }
-        
-        // Přeinstalování ikon, aby se změna projevila
-        if (window.lucide) {
-            window.lucide.createIcons();
+
+        if (isPlayingSound) {
+            await startSound(soundSelect ? soundSelect.value : 'drone');
+            soundToggleBtn.classList.add('active');
+            updateSoundIcon(true);
+        } else {
+            stopSoundSafe();
+            soundToggleBtn.classList.remove('active');
+            updateSoundIcon(false);
         }
     });
 }
+
     // --- NOTIFIKACE ---
     const notificationStatus = document.getElementById('notificationStatus');
     if (notificationStatus) {
