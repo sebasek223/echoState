@@ -198,9 +198,15 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    async function startSound(type) {
+async function startSound(type) {
         initAudio();
-        stopSound(false);
+        stopSoundSafe();
+
+            if (!masterGain || !audioCtx) return;
+
+
+
+
 
         // Mobile Safari/Chrome: po prvním clicku nutné obnovit audioCtx
         if (audioCtx && audioCtx.state === 'suspended') {
