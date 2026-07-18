@@ -274,12 +274,22 @@ document.addEventListener('DOMContentLoaded', () => {
                 startSound(soundSelect ? soundSelect.value : 'drone');
                 if (soundIcon) soundIcon.setAttribute('data-lucide', 'volume-2');
                 soundToggleBtn.setAttribute('aria-pressed', 'true');
+                if (soundToggleBtn.querySelector('svg')) {
+                    soundToggleBtn.querySelector('svg').style.color = 'var(--text-primary)';
+                    soundToggleBtn.querySelector('svg').style.filter = 'drop-shadow(0 0 10px rgba(139, 92, 246, 0.65))';
+                }
 
                 soundToggleBtn.classList.add('active');
+
             } else {
                 stopSound();
                 if (soundIcon) soundIcon.setAttribute('data-lucide', 'volume-x');
                 soundToggleBtn.setAttribute('aria-pressed', 'false');
+                if (soundToggleBtn.querySelector('svg')) {
+                    soundToggleBtn.querySelector('svg').style.color = 'var(--text-secondary)';
+                    soundToggleBtn.querySelector('svg').style.filter = 'none';
+                }
+
                 soundToggleBtn.classList.remove('active');
             }
             if (window.lucide) window.lucide.createIcons();
