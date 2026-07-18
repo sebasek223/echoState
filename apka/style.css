@@ -126,17 +126,39 @@ body {
     transform: translateY(1px);
 }
 
-.logo-icon {
-    width: 1.2em;
-    height: 1.2em;
-}
+/* --- OPRAVA LOGA A IKON --- */
 
 .logo {
-    font-size: 1.7rem;
-    letter-spacing: -0.04em;
-    text-shadow: 0 0 18px rgba(139, 92, 246, 0.35);
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-size: 1.5rem;
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    background: var(--gradient-primary);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
 }
 
+.logo-icon {
+    width: 24px;
+    height: 24px;
+    color: var(--accent-purple);
+    filter: drop-shadow(0 0 8px rgba(139, 92, 246, 0.5));
+    flex-shrink: 0;
+}
+
+.sound-control-group {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.sound-control-group i {
+    font-size: 1rem;
+    color: var(--text-secondary);
+}
 
 .header-left {
     display: flex;
