@@ -265,9 +265,20 @@ async function startSound(type) {
 // Sound toggle (stabilní přepínání + resume + lucide refresh)
 function updateSoundIcon(isOn) {
     if (!soundIcon) return;
-    soundIcon.setAttribute('data-lucide', isOn ? 'volume-2' : 'volume-x');
-    if (window.lucide) window.lucide.createIcons();
+
+    const next = isOn ? 'volume-2' : 'volume-x';
+    soundIcon.setAttribute('data-lucide', next);
+
+    // U některých prohlížečů/časování může Lucide ponechat starý SVG.
+    // Proto ikonku vyměníme za nový SVG pomocí innerHTML z Lucide.
+    if (window.lucide) {
+        try {
+            window.lucide.createIcons();
+        } catch (e) {}
+    }
 }
+
+
 
 function stopSoundSafe() {
     try {
@@ -298,11 +309,20 @@ if (soundToggleBtn) {
             await startSound(soundSelect ? soundSelect.value : 'drone');
             soundToggleBtn.classList.add('active');
             updateSoundIcon(true);
+            // krátce po překreslení Lucide znovu refreshneme ikonku,
+            // aby se „křížek“ nedržel v DOM
+            if (soundIcon) {
+                setTimeout(() => updateSoundIcon(true), 0);
+            }
         } else {
             stopSoundSafe();
             soundToggleBtn.classList.remove('active');
             updateSoundIcon(false);
+            if (soundIcon) {
+                setTimeout(() => updateSoundIcon(false), 0);
+            }
         }
+
     });
 }
 

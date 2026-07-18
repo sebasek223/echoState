@@ -61,6 +61,8 @@ body {
     animation: float 25s infinite alternate ease-in-out;
 }
 
+
+
 .blob-1 {
     background: radial-gradient(circle, var(--accent-purple) 0%, transparent 70%);
     top: -10%;
@@ -110,14 +112,15 @@ body {
 }
 
 .logo {
-    font-size: 1.5rem;
-    font-weight: 700;
-    letter-spacing: -0.03em;
-    background: var(--gradient-primary);
-    color: var(--accent-purple);
     display: flex;
     align-items: center;
-    gap: 0.5rem;
+    gap: 0.6rem;
+    font-size: 1.5rem;
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    color: #ffffff;
+    background: none;
+    text-shadow: 0 0 10px rgba(139, 92, 246, 0.35);
 }
 
 .logo-icon {
@@ -126,18 +129,6 @@ body {
     transform: translateY(1px);
 }
 
-/* --- OPRAVA LOGA A IKON --- */
-
-.logo {
-    display: flex;
-    align-items: center;
-    gap: 0.6rem;
-    font-size: 1.5rem;
-    font-weight: 700;
-    letter-spacing: -0.03em;
-    color: #ffffff;
-    background: none; /* Tímto odstraníš ten fialový obdélník */
-}
 
 /* Tlačítko se zvukem - stabilní a vždy klikatelné */
 #soundToggle {
