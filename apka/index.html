@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Oáza | Tvůj digitální klid</title>
+    
+    <!-- PWA Meta Tags -->
+    <link rel="manifest" href="manifest.json?v=9">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="apple-touch-icon" href="icon.svg">
+    
+    <!-- Google Fonts: Outfit -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+
+
+
+    <link rel="stylesheet" href="style.css?v=9">
+</head>
+<body>
+    <!-- Background glowing decorative blobs -->
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+    <div class="blob blob-3"></div>
+
+    <div class="app-container" id="appContainer">
+        <!-- HEADER -->
+        <header class="app-header">
+            <div class="header-left">
+                <span class="logo">
+                    <i data-lucide="compass" class="logo-icon"></i> Oáza
+                </span>
+                <span class="header-greeting" id="headerGreeting">Ahoj, nadechni se...</span>
+            </div>
+            <div class="header-right">
+                <div class="sound-control-group">
+                    <select id="soundSelect" class="sound-select" title="Vyberte uklidňující zvuk">
+                        <option value="drone">Uklidňující vlny</option>
+                        <option value="binaural">Theta binaurální tón</option>
+                        <option value="rain">Jemný déšť</option>
+                    </select>
+                    <button class="btn-icon" id="soundToggle" title="Přehrát / Zastavit zvuk">
+                        <i data-lucide="volume-x" id="soundIcon"></i>
+                    </button>
+                </div>
+                <button class="btn btn-secondary quick-cbt-btn" id="quickCbtBtn" type="button">
+                    <i data-lucide="notebook-pen"></i> CBT
+                </button>
+                <div class="time-widget" id="timeWidget">17:08</div>
+                <div class="notification-status" id="notificationStatus" title="Stav oznámení">🔔 Nepřipojeno</div>
+            </div>
+        </header>
+
+        <!-- NAVIGATION (intuitivní, proklikatelné) -->
+        <nav class="tab-navigation" id="tabNavigation" aria-label="Navigace">
+            <div class="tab-row" role="group" aria-label="Hlavní">
+                <button class="tab-btn active" data-tab="home" type="button" aria-current="page">
+                    <i data-lucide="home" aria-hidden="true"></i><span>Domů</span>
+                </button>
+                <button class="tab-btn" data-tab="breathe" type="button">
+                    <i data-lucide="wind" aria-hidden="true"></i><span>Dýchání</span>
+                </button>
+                <button class="tab-btn" data-tab="focus" type="button">
+                    <i data-lucide="target" aria-hidden="true"></i><span>Focus</span>
+                </button>
+                <button class="tab-btn" data-tab="grounding" type="button">
+                    <i data-lucide="anchor" aria-hidden="true"></i><span>Uzemnit</span>
+                </button>
+            </div>
+            <div class="tab-row" role="group" aria-label="Další">
+                <button class="tab-btn" data-tab="memory" type="button">
+                    <i data-lucide="brain-circuit" aria-hidden="true"></i><span>Paměť</span>
+                </button>
+                <button class="tab-btn" data-tab="triage" type="button">
+                    <i data-lucide="brain" aria-hidden="true"></i><span>Třídění</span>
+                </button>
+                <button class="tab-btn" data-tab="gratitude" type="button">
+                    <i data-lucide="heart" aria-hidden="true"></i><span>Radosti</span>
+                </button>
+                <button class="tab-btn" data-tab="journal" type="button">
+                    <i data-lucide="notebook-pen" aria-hidden="true"></i><span>Journal</span>
+                </button>
+            </div>
+        </nav>
+
+
+        <!-- MAIN DYNAMIC CONTENT PANELS -->
+        <main class="dashboard-grid">
+            <!-- PANEL: HOME (DASHBOARD & GARDEN) -->
+            <div class="tab-panel active" id="panel-home">
+                <div class="home-grid">
+
+                    <!-- STAT MINI CARDS ROW -->
+                    <div class="home-stats-row">
+                        <div class="stat-mini-card stat-minutes">
+                            <i data-lucide="timer" class="stat-icon"></i>
+                            <span class="stat-number" id="statTotalMinutes">0</span>
+                            <span class="stat-label">Minut klidu</span>
+                        </div>
+                        <div class="stat-mini-card stat-sessions">
+                            <i data-lucide="target" class="stat-icon"></i>
+                            <span class="stat-number" id="statSessions">0</span>
+                            <span class="stat-label">Focus sessions</span>
+                        </div>
+                        <div class="stat-mini-card stat-breaths">
+                            <i data-lucide="wind" class="stat-icon"></i>
+                            <span class="stat-number" id="statBreaths">0</span>
+                            <span class="stat-label">Dechová cvičení</span>
+                        </div>
+                        <div class="stat-mini-card stat-joys">
+                            <i data-lucide="heart" class="stat-icon"></i>
+                            <span class="stat-number" id="statJoys">0</span>
+                            <span class="stat-label">Uložené radosti</span>
+                        </div>
+                    </div>
+
+                    <!-- Welcome Card -->
+                        <div class="card welcome-card">
+                            <div class="card-header">
+                                <h2><i data-lucide="sparkles"></i> Tvůj prostor pro klid</h2>
+                                <span class="card-subtitle">Vítej zpět v Oáze. Vyber si teď jednu věc — zbytek počká.</span>
+                            </div>
+                            <div class="card-body welcome-body">
+                                <p>Přetížila tě hlava? Jedním klepnutím zvol:</p>
+
+                                <div class="home-quick-actions" aria-label="Rychlé akce">
+                                    <button class="btn btn-primary home-quick-action" data-go-tab="breathe" type="button">
+                                        <i data-lucide="wind" aria-hidden="true"></i>
+                                        Rychlé dýchání
+                                    </button>
+                                    <button class="btn btn-secondary home-quick-action" data-go-tab="focus" type="button">
+                                        <i data-lucide="target" aria-hidden="true"></i>
+                                        Spustit focus
+                                    </button>
+                                    <button class="btn btn-secondary home-quick-action" data-go-tab="triage" type="button">
+                                        <i data-lucide="flame" aria-hidden="true"></i>
+                                        Třídění + oheň
+                                    </button>
+                                </div>
+
+                                <ul class="zen-recommendations">
+                                    <li><a href="#" class="tab-link" data-go-tab="breathe"><i data-lucide="wind"></i> Rychlé 1-minutové dýchání</a></li>
+                                    <li><a href="#" class="tab-link" data-go-tab="grounding"><i data-lucide="anchor"></i> Hru „Zastav scroll" pro návrat do reality</a></li>
+                                    <li><a href="#" class="tab-link" data-go-tab="triage"><i data-lucide="flame"></i> Zapsat a spálit obavy, které ti straší v hlavě</a></li>
+                                    <li><a href="#" class="tab-link" data-go-tab="journal"><i data-lucide="notebook-pen"></i> CBT proti negativním myšlenkám</a></li>
+                                </ul>
+
+                                <button class="btn btn-secondary home-cta" id="btnOpenCbtFromHome" type="button">
+                                    <i data-lucide="sparkles"></i> Otevřít CBT hned
+                                </button>
+                            </div>
+                        </div>
+
+
+                    <!-- Garden of Focus Card -->
+                    <div class="card garden-card" id="gardenCard">
+                        <div class="card-header">
+                            <h2><i data-lucide="sprout"></i> Zahrada soustředění</h2>
+                            <span class="card-subtitle">Tvůj čas soustředění probouzí zahradu k životu</span>
+                        </div>
+                        <div class="card-body garden-body">
+                            <div class="garden-stats">
+                                <div class="stat-box">
+                                    <span class="stat-val" id="totalFocusMinutes">0</span>
+                                    <span class="stat-lbl">Minuty</span>
+                                </div>
+                                <div class="stat-box">
+                                    <span class="stat-val" id="plantsCount">0</span>
+                                    <span class="stat-lbl">Rostliny</span>
+                                </div>
+                                <div class="stat-box">
+                                    <span class="stat-val" id="gardenStreak">0</span>
+                                    <span class="stat-lbl">Dny praxe</span>
+                                </div>
+                            </div>
+                            <div class="garden-plot" id="gardenPlot">
+                                <!-- Plants dynamically generated -->
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div><!-- /panel-home -->
+
+            <!-- PANEL: BREATHE -->
+            <div class="tab-panel" id="panel-breathe">
+                <section class="card breathing-card full-tab-card" id="breathingCard">
+                    <div class="card-header">
+                        <h2><i data-lucide="wind"></i> Rychlý nádech</h2>
+                        <span class="card-subtitle">Dechové cvičení Box Breathing (4-4-4-4) pro okamžité zklidnění nervové soustavy.</span>
+                    </div>
+                    <div class="card-body breathing-body">
+                        <div class="breath-visual-container">
+                            <div class="breath-circle" id="breathCircle"></div>
+                            <div class="breath-text-overlay">
+                                <span id="breathAction">Připrav se</span>
+                                <span id="breathTimer">--</span>
+                            </div>
+                        </div>
+                        <div class="breathing-controls">
+                            <button class="btn btn-primary" id="btnStartBreath">Spustit cvičení</button>
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+            <!-- PANEL: FOCUS -->
+            <div class="tab-panel" id="panel-focus">
+                <section class="card focus-card full-tab-card" id="focusCard">
+                    <div class="card-header">
+                        <h2><i data-lucide="target"></i> Teď a tady (Časovač)</h2>
+                        <span class="card-subtitle">Vyber si jeden úkol, na kterém budeš pracovat, a zapomeň na okolní svět.</span>
+                    </div>
+                    <div class="card-body focus-body">
+                        <div class="task-input-container">
+                            <label for="focusTask">Na čem právě pracuješ?</label>
+                            <input type="text" id="focusTask" placeholder="Napiš sem jeden hlavní úkol (např. Čtení knihy, Psaní zápisků...)" autocomplete="off">
+                        </div>
+                        
+                        <div class="focus-timer-section">
+                            <div class="timer-presets">
+                                <button class="btn-preset active" data-time="5">5 minut</button>
+                                <button class="btn-preset" data-time="10">10 minut</button>
+                                <button class="btn-preset" data-time="15">15 minut</button>
+                                <button class="btn-preset" data-time="20">20 minut</button>
+                            </div>
+                            
+                            <div class="timer-display-container">
+                                <svg class="timer-svg" viewBox="0 0 100 100">
+                                    <circle class="timer-bg-circle" cx="50" cy="50" r="45"></circle>
+                                    <circle class="timer-progress-circle" id="timerProgress" cx="50" cy="50" r="45"></circle>
+                                </svg>
+                                <div class="timer-text" id="timerDisplay">05:00</div>
+                            </div>
+                        </div>
+
+                        <div class="focus-controls">
+                            <button class="btn btn-primary" id="btnStartFocus"><i data-lucide="play"></i> Spustit soustředění</button>
+                            <button class="btn btn-secondary" id="btnZenMode"><i data-lucide="expand"></i> Zen Mód (Celá obrazovka)</button>
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+            <!-- PANEL: GROUNDING (5-4-3-2-1 Redesigned) -->
+            <div class="tab-panel" id="panel-grounding">
+                <section class="card grounding-card full-tab-card" id="groundingCard">
+                    <div class="card-header">
+                        <h2><i data-lucide="anchor"></i> Zastav scroll (Smyslové uzemnění)</h2>
+                        <span class="card-subtitle">Technika 5-4-3-2-1 tě vytrhne ze scrollovacího transu a ukotví v přítomném okamžiku.</span>
+                    </div>
+                    <div class="card-body grounding-body">
+                        <!-- Intro View -->
+                        <div id="groundingIntro" class="grounding-step-view active">
+                            <p class="grounding-desc">Cítíš se roztěkaně, přepracovaně nebo bezmyšlenkovitě scrolluješ na telefonu? Tato interaktivní technika tě vrátí zpět do fyzického těla prostřednictvím tvých 5 smyslů.</p>
+                            <button class="btn btn-primary" id="btnStartGrounding">Spustit uzemnění</button>
+                        </div>
+
+                        <!-- Step View (Redesigned with Slots) -->
+                        <div id="groundingStep" class="grounding-step-view">
+                            <div class="grounding-instruction">
+                                <span class="step-badge" id="groundingStepBadge">Krok 1 / 5</span>
+                                <h3 id="groundingPrompt">Napiš 5 věcí, které kolem sebe vidíš</h3>
+                            </div>
+                            <div class="grounding-input-group">
+                                <div class="input-with-btn">
+                                    <input type="text" id="groundingInput" placeholder="Zadej položku..." autocomplete="off">
+                                    <button class="btn btn-primary" id="btnAddToGrounding" title="Přidat"><i data-lucide="plus"></i></button>
+                                </div>
+                                
+                                <!-- Redesigned intuitive slots -->
+                                <div class="grounding-slots-container" id="groundingSlots">
+                                    <!-- Dynamic empty/filled slots will be generated here -->
+                                </div>
+                            </div>
+                            <div class="grounding-controls">
+                                <button class="btn btn-primary" id="btnNextGrounding" disabled>Další krok <i data-lucide="arrow-right"></i></button>
+                            </div>
+                        </div>
+
+                        <!-- Success View -->
+                        <div id="groundingSuccess" class="grounding-step-view">
+                            <div class="success-content">
+                                <div class="success-icon-container">
+                                    <i data-lucide="sparkles" class="success-sparkles"></i>
+                                </div>
+                                <h3>Jsi zpátky v přítomnosti</h3>
+                                <p>Tvé tělo je tady. Tvá mysl je klidná. Hluboce se nadechni a pokračuj v tom, co je pro tebe teď opravdu důležité.</p>
+                                <button class="btn btn-secondary" id="btnRestartGrounding">Zpět na začátek</button>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+            <!-- PANEL: MEMORY -->
+            <div class="tab-panel" id="panel-memory">
+                <section class="card memory-card full-tab-card" id="memoryCard">
+                    <div class="card-header">
+                        <h2><i data-lucide="brain-circuit"></i> Paměťová rozcvička</h2>
+                        <span class="card-subtitle">Trénuj krátkodobou paměť a uvolni kognitivní napětí.</span>
+                    </div>
+                    <div class="card-body memory-body">
+                        <!-- Intro View -->
+                        <div id="memoryIntro" class="memory-step-view active">
+                            <p class="memory-desc">Ukážeme ti 5 uklidňujících přírodních slov po dobu 10 sekund. Zkus si je zapamatovat a pak je napsat zpět. Trénuje to tvůj mozek a vytlačuje rušivé podněty.</p>
+                            <button class="btn btn-primary" id="btnStartMemory">Spustit rozcvičku</button>
+                        </div>
+                        
+                        <!-- Display Words View -->
+                        <div id="memoryDisplay" class="memory-step-view">
+                            <div class="words-grid" id="wordsGrid">
+                                <!-- Dynamically filled -->
+                            </div>
+                            <div class="progress-bar-container">
+                                <div class="progress-bar-fill" id="memoryProgressBar"></div>
+                            </div>
+                            <span class="memory-hint">Soustřeď se na slova a klidně dýchej...</span>
+                        </div>
+                        
+                        <!-- Input Words View -->
+                        <div id="memoryInputView" class="memory-step-view">
+                            <h3>Napiš slova, která si pamatuješ:</h3>
+                            <p class="memory-subhint">Slova odděluj mezerou nebo čárkou (na pořadí nezáleží)</p>
+                            <input type="text" id="memoryInput" placeholder="Napiš slova..." autocomplete="off">
+                            <button class="btn btn-primary" id="btnSubmitMemory">Vyhodnotit výsledky</button>
+                        </div>
+                        
+                        <!-- Result View -->
+                        <div id="memoryResult" class="memory-step-view">
+                            <div class="result-score-container">
+                                <span class="result-score" id="memoryScore">3 / 5</span>
+                                <p id="memoryFeedback">Skvělá práce!</p>
+                            </div>
+                            <div class="result-compare-lists">
+                                <div class="compare-col">
+                                    <h4>Správně:</h4>
+                                    <ul id="memoryCorrectList"></ul>
+                                </div>
+                                <div class="compare-col">
+                                    <h4>Chybělo ti:</h4>
+                                    <ul id="memoryMissingList"></ul>
+                                </div>
+                            </div>
+                            <button class="btn btn-secondary" id="btnRestartMemory">Zkusit znovu</button>
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+            <!-- PANEL: TRIAGE & WORRY BURNER -->
+            <div class="tab-panel" id="panel-triage">
+                <section class="card dump-card full-tab-card" id="dumpCard">
+                    <div class="card-header">
+                        <h2><i data-lucide="brain"></i> Třídění myšlenek & Oheň</h2>
+                        <span class="card-subtitle">Napiš cokoli, co tě zatěžuje, a roztřiď to. Můžeš to vyřešit dnes, uložit na později, nebo spálit v ohni a vypustit z hlavy.</span>
+                    </div>
+                    <div class="card-body dump-body">
+                        <div class="input-category-group">
+                            <textarea id="thoughtInput" placeholder="Napiš sem obavu, úkol nebo myšlenku..." rows="3"></textarea>
+                            <div class="category-buttons">
+                                <button class="btn btn-secondary btn-cat" id="btnCatToday" title="Udělat dnes">
+                                    <i data-lucide="calendar"></i> Udělám dnes
+                                </button>
+                                <button class="btn btn-secondary btn-cat" id="btnCatLater" title="Vyřešit později">
+                                    <i data-lucide="archive"></i> Vyřeším později
+                                </button>
+                                <button class="btn btn-primary btn-cat btn-burn" id="btnCatBurn" title="Spálit obavu">
+                                    <i data-lucide="flame"></i> Spálit v ohni
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="thought-lists-container">
+                            <div class="thought-column">
+                                <h3>Dnešní úkoly (<span id="countToday">0</span>)</h3>
+                                <ul class="thought-list" id="listToday"></ul>
+                            </div>
+                            <div class="thought-column">
+                                <h3>Uloženo na později (<span id="countLater">0</span>)</h3>
+                                <ul class="thought-list" id="listLater"></ul>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Burning text overlay effect -->
+                    <div class="burning-overlay" id="burningOverlay">
+                        <div class="burning-text-container">
+                            <p id="burningText">Moje obava...</p>
+                        </div>
+                        <div class="fire-particles-container" id="fireParticles"></div>
+                    </div>
+                </section>
+            </div>
+
+            <!-- PANEL: CBT JOURNAL -->
+            <div class="tab-panel" id="panel-journal">
+                <section class="card journal-card full-tab-card" id="journalCard">
+                    <div class="card-header">
+                        <h2><i data-lucide="notebook-pen"></i> CBT sebe-reflexe & deník</h2>
+                        <span class="card-subtitle">Přerámuj negativní myšlenky a zapiš si dnešní stav pomocí jednoduchých šablon.</span>
+                    </div>
+                    <div class="card-body journal-body">
+                        <div class="journal-section">
+                            <h3>Rychlá CBT reflexe</h3>
+                            <label for="cbtEmotion">Jakou emoci máš?</label>
+                            <input id="cbtEmotion" type="text" placeholder="Např. úzkost, hněv, smutek" autocomplete="off">
+                            <label for="cbtThought">Co jsem si myslel?</label>
+                            <textarea id="cbtThought" rows="2" placeholder="Např. Jsem neúspěšný..."></textarea>
+                            <label for="cbtEvidence">Jaké jsou fakta?</label>
+                            <textarea id="cbtEvidence" rows="2" placeholder="Co se skutečně stalo?"></textarea>
+                            <label for="cbtAssumption">Jaká domněnka mě vede?</label>
+                            <textarea id="cbtAssumption" rows="2" placeholder="Co si o sobě myslím?"></textarea>
+                            <label for="cbtInsight">Jaký jiný pohled je možný?</label>
+                            <textarea id="cbtInsight" rows="2" placeholder="Jak to mohu přeformulovat?"></textarea>
+                            <button class="btn btn-primary" id="btnCreateCbt">Vytvořit přerámování</button>
+                            <div class="journal-result" id="cbtResult"></div>
+                        </div>
+
+                        <div class="journal-section">
+                            <h3>Jednoduchý CBT krok za krokem</h3>
+                            <label for="cbtStepTrigger">Kdy se to stalo?</label>
+                            <input id="cbtStepTrigger" type="text" placeholder="Např. před schůzkou" autocomplete="off">
+                            <label for="cbtStepThought">Jaká automatická myšlenka přišla?</label>
+                            <textarea id="cbtStepThought" rows="2" placeholder="Např. Musím být perfektní."></textarea>
+                            <label for="cbtStepEvidence">Co mluví proti této myšlence?</label>
+                            <textarea id="cbtStepEvidence" rows="2" placeholder="Např. Včera jsem to zvládl dobře."></textarea>
+                            <label for="cbtStepBalanced">Jaká vyváženější verze je možná?</label>
+                            <textarea id="cbtStepBalanced" rows="2" placeholder="Např. Jedna chyba neznamená neúspěch."></textarea>
+                            <label for="cbtStepAction">Co udělám hned teď?</label>
+                            <textarea id="cbtStepAction" rows="2" placeholder="Např. Udělám jeden malý krok."></textarea>
+                            <button class="btn btn-secondary" id="btnCreateSimpleCbt">Vytvořit krátký CBT plán</button>
+                            <div class="journal-result" id="simpleCbtResult"></div>
+                        </div>
+
+                        <div class="journal-section">
+                            <h3>Poslední CBT záznamy</h3>
+                            <div class="journal-search-results" id="cbtHistoryList"></div>
+                        </div>
+
+                        <div class="journal-section">
+                            <h3>Řízené mikro-zápisky</h3>
+                            <div class="prompt-list" id="promptList"></div>
+                            <textarea id="journalEntry" rows="3" placeholder="Napiš si pár řádků..."></textarea>
+                            <button class="btn btn-secondary" id="btnSaveJournal">Uložit zápis</button>
+                        </div>
+
+                        <div class="journal-section">
+                            <h3>Vyhledávání v deníku</h3>
+                            <input type="text" id="journalSearch" placeholder="Např. klidný a ticho" autocomplete="off">
+                            <button class="btn btn-secondary" id="btnSearchJournal">Najít souvislosti</button>
+                            <div class="journal-search-results" id="journalSearchResults"></div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+            <!-- PANEL: GRATITUDE -->
+            <div class="tab-panel" id="panel-gratitude">
+                <section class="card gratitude-card full-tab-card" id="gratitudeCard">
+                    <div class="card-header">
+                        <h2><i data-lucide="heart"></i> Tři dnešní radosti</h2>
+                        <span class="card-subtitle">Zapsání tří věcí, za které jsi vděčný, prokazatelně zvyšuje hladinu štěstí. Trénuj svůj mozek vidět dobro.</span>
+                    </div>
+                    <div class="card-body gratitude-body">
+                        <form id="gratitudeForm">
+                            <div class="gratitude-inputs">
+                                <div class="gratitude-input-row">
+                                    <span class="num">1.</span>
+                                    <input type="text" id="gratitude1" placeholder="Co se ti dnes povedlo?" required autocomplete="off">
+                                </div>
+                                <div class="gratitude-input-row">
+                                    <span class="num">2.</span>
+                                    <input type="text" id="gratitude2" placeholder="Co ti udělalo radost?" required autocomplete="off">
+                                </div>
+                                <div class="gratitude-input-row">
+                                    <span class="num">3.</span>
+                                    <input type="text" id="gratitude3" placeholder="Za co jsi vděčný?" required autocomplete="off">
+                                </div>
+                            </div>
+                            <button type="submit" class="btn btn-primary" id="btnSaveGratitude">Uložit do deníku</button>
+                        </form>
+
+                        <div class="gratitude-history">
+                            <h3>Historie tvých radostí</h3>
+                            <div class="history-list" id="gratitudeHistoryList">
+                                <p class="empty-history-text">Zatím nemáš žádné uložené radosti. Začni dneškem!</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+        </main>
+
+        <!-- ZEN MODE OVERLAY -->
+        <div class="zen-overlay" id="zenOverlay">
+            <button class="btn-icon btn-exit-zen" id="btnExitZen" title="Ukončit Zen Mód">
+                <i data-lucide="minimize-2"></i>
+            </button>
+            <div class="zen-content">
+                <span class="zen-task-title" id="zenTaskTitle">Hlavní úkol</span>
+                <div class="zen-timer-display" id="zenTimerDisplay">00:00</div>
+                <div class="zen-breathing-hint" id="zenBreathingHint">Dýchej zhluboka...</div>
+                <button class="btn btn-secondary" id="btnPauseZen">Pozastavit</button>
+            </div>
+            <div class="zen-waves">
+                <div class="wave wave1"></div>
+                <div class="wave wave2"></div>
+                <div class="wave wave3"></div>
+            </div>
+        </div>
+
+        <!-- FOOTER -->
+        <footer class="app-footer">
+            <p id="quoteDisplay">"Základem každého úspěchu je soustředit se na jednu věc po dostatečně dlouhou dobu."</p>
+            <span class="quote-author" id="quoteAuthor">- Neznámý autor</span>
+        </footer>
+    </div>
+
+    <script src="journal-utils.js?v=9"></script>
+    <script src="app.js?v=9"></script>
+</body>
+</html>
