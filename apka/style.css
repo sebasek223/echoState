@@ -48,8 +48,19 @@ body {
 
 /* Ambient Glowing Background Blobs */
 .blob {
-    display: none; /* vypnuto kvůli čitelnosti */
+    position: fixed;
+    width: 60vw;
+    height: 60vw;
+    max-width: 600px;
+    max-height: 600px;
+    border-radius: 50%;
+    filter: blur(140px);
+    opacity: 0.18;
+    z-index: -1;
+    pointer-events: none;
+    animation: float 25s infinite alternate ease-in-out;
 }
+
 
 
 
