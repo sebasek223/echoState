@@ -349,6 +349,26 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    const soundToggle = document.getElementById('soundToggle');
+const soundIcon = document.getElementById('soundIcon');
+
+soundToggle.addEventListener('click', () => {
+    // Přepne stav třídy
+    soundToggle.classList.toggle('is-playing');
+    
+    // Změna ikony (Lucide vyžaduje přepsání data-lucide atributu)
+    if (soundToggle.classList.contains('is-playing')) {
+        soundIcon.setAttribute('data-lucide', 'volume-2');
+    } else {
+        soundIcon.setAttribute('data-lucide', 'volume-x');
+    }
+    
+    // Znovu inicializuj ikony, aby se vykreslily
+    lucide.createIcons();
+    
+    // Tady pak bude tvoje funkce pro spuštění/zastavení audia
+});
+
     function startBreathing() {
         isBreathing = true;
         if (btnStartBreath) {

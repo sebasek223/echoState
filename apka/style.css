@@ -135,12 +135,42 @@ body {
     font-size: 1.5rem;
     font-weight: 700;
     letter-spacing: -0.03em;
-    background: var(--gradient-primary);
-    background-clip: text;
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
+    color: #ffffff;      /* Nastav bílou barvu nebo tvou hlavní barvu textu */
+    background: none;    /* Tímto odstraníš ten fialový obdélník */
+}
+/* Toto schová křížek v ovládání hlasitosti */
+.sound-control-group i.fa-times, 
+.sound-control-group i.fa-xmark {
+    display: none !important;
 }
 
+/* Tlačítko se zvukem */
+#soundToggle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--text-secondary);
+}
+
+/* Skryje ikonu 'volume-x' (křížek), když je zvuk aktivní */
+#soundToggle.is-playing [data-lucide="volume-x"] {
+    display: none;
+}
+
+/* Musíš mít v JS i druhou ikonu, např. 'volume-2', která se ukáže při hraní */
+#soundToggle:not(.is-playing) [data-lucide="volume-2"] {
+    display: none;
+}
+
+.logo-text { /* Obal svůj text v HTML do <span class="logo-text">Oáza</span> */
+    background: var(--gradient-primary);
+    -webkit-background-clip: text;
+    background-clip: text; /* Tady už to bude v pořádku */
+    -webkit-text-fill-color: transparent;
+}
 .logo-icon {
     width: 24px;
     height: 24px;
