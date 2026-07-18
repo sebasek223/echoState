@@ -198,10 +198,15 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    function startSound(type) {
+    async function startSound(type) {
         initAudio();
         stopSound(false);
-        
+
+        // Mobile Safari/Chrome: po prvním clicku nutné obnovit audioCtx
+        if (audioCtx && audioCtx.state === 'suspended') {
+            try { await audioCtx.resume(); } catch (e) {}
+        }
+
         masterGain.gain.cancelScheduledValues(audioCtx.currentTime);
         masterGain.gain.setValueAtTime(0, audioCtx.currentTime);
         masterGain.gain.linearRampToValueAtTime(0.1, audioCtx.currentTime + 2); // Fade in
@@ -209,7 +214,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (type === 'drone') {
             createOscillator(130.81, 'sine'); // C3
             createOscillator(196.00, 'sine'); // G3
-            createOscillator(131.5, 'sine');  
+            createOscillator(131.5, 'sine');
         } else if (type === 'binaural') {
             createOscillator(200, 'sine', -1); // Levé ucho
             createOscillator(206, 'sine', 1);  // Pravé ucho (6Hz Theta vlny)
@@ -217,6 +222,7 @@ document.addEventListener('DOMContentLoaded', () => {
             createNoise();
         }
     }
+
 
     function createOscillator(freq, type, pan = 0) {
         const osc = audioCtx.createOscillator();
@@ -250,58 +256,42 @@ document.addEventListener('DOMContentLoaded', () => {
         soundOscillators.push(noise);
     }
 
-    function stopSound(fadeOut = true) {
-        if (masterGain && fadeOut) {
-            masterGain.gain.cancelScheduledValues(audioCtx.currentTime);
-            masterGain.gain.linearRampToValueAtTime(0, audioCtx.currentTime + 1);
-            setTimeout(() => killOscillators(), 1000);
-        } else {
-            killOscillators();
-        }
-    }
+// Musíme získat element podle správného ID z tvého HTML
+const soundToggleBtn = document.getElementById('soundToggle'); 
+const soundSelect = document.getElementById('soundSelect');
+const soundIcon = document.getElementById('soundIcon');
+let isPlayingSound = false; // Ujisti se, že máš tuto proměnnou definovanou
 
-    function killOscillators() {
-        soundOscillators.forEach(osc => {
-            try { osc.stop(); } catch(e) {}
-        });
-        soundOscillators = [];
-    }
-
-    if (soundToggleBtn) {
-        soundToggleBtn.addEventListener('click', () => {
-            isPlayingSound = !isPlayingSound;
-            if (isPlayingSound) {
-                startSound(soundSelect ? soundSelect.value : 'drone');
-                if (soundIcon) soundIcon.setAttribute('data-lucide', 'volume-2');
-                soundToggleBtn.setAttribute('aria-pressed', 'true');
-                if (soundToggleBtn.querySelector('svg')) {
-                    soundToggleBtn.querySelector('svg').style.color = 'var(--text-primary)';
-                    soundToggleBtn.querySelector('svg').style.filter = 'drop-shadow(0 0 10px rgba(139, 92, 246, 0.65))';
-                }
-
-                soundToggleBtn.classList.add('active');
-
-            } else {
-                stopSound();
-                if (soundIcon) soundIcon.setAttribute('data-lucide', 'volume-x');
-                soundToggleBtn.setAttribute('aria-pressed', 'false');
-                if (soundToggleBtn.querySelector('svg')) {
-                    soundToggleBtn.querySelector('svg').style.color = 'var(--text-secondary)';
-                    soundToggleBtn.querySelector('svg').style.filter = 'none';
-                }
-
-                soundToggleBtn.classList.remove('active');
+if (soundToggleBtn) {
+    soundToggleBtn.addEventListener('click', () => {
+        isPlayingSound = !isPlayingSound;
+        
+        if (isPlayingSound) {
+            // Spustí zvuk podle vybrané hodnoty v selectu
+            startSound(soundSelect ? soundSelect.value : 'drone');
+            soundToggleBtn.classList.add('active');
+            
+            // Změna ikony na volume-2
+            if (soundIcon) {
+                soundIcon.setAttribute('data-lucide', 'volume-2');
             }
-            if (window.lucide) window.lucide.createIcons();
-        });
-    }
-
-    if (soundSelect) {
-        soundSelect.addEventListener('change', () => {
-            if (isPlayingSound) startSound(soundSelect.value);
-        });
-    }
-
+        } else {
+            // Zastaví zvuk
+            stopSound();
+            soundToggleBtn.classList.remove('active');
+            
+            // Změna ikony na volume-x
+            if (soundIcon) {
+                soundIcon.setAttribute('data-lucide', 'volume-x');
+            }
+        }
+        
+        // Přeinstalování ikon, aby se změna projevila
+        if (window.lucide) {
+            window.lucide.createIcons();
+        }
+    });
+}
     // --- NOTIFIKACE ---
     const notificationStatus = document.getElementById('notificationStatus');
     if (notificationStatus) {
@@ -349,25 +339,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    const soundToggle = document.getElementById('soundToggle');
-const soundIcon = document.getElementById('soundIcon');
-
-soundToggle.addEventListener('click', () => {
-    // Přepne stav třídy
-    soundToggle.classList.toggle('is-playing');
     
-    // Změna ikony (Lucide vyžaduje přepsání data-lucide atributu)
-    if (soundToggle.classList.contains('is-playing')) {
-        soundIcon.setAttribute('data-lucide', 'volume-2');
-    } else {
-        soundIcon.setAttribute('data-lucide', 'volume-x');
-    }
-    
-    // Znovu inicializuj ikony, aby se vykreslily
-    lucide.createIcons();
-    
-    // Tady pak bude tvoje funkce pro spuštění/zastavení audia
-});
 
     function startBreathing() {
         isBreathing = true;

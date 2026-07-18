@@ -136,33 +136,38 @@ body {
     font-weight: 700;
     letter-spacing: -0.03em;
     color: #ffffff;      /* Nastav bílou barvu nebo tvou hlavní barvu textu */
-    background: none;    /* Tímto odstraníš ten fialový obdélník */
+    background: none
+        /* Tímto odstraníš ten fialový obdélník */
 }
-/* Toto schová křížek v ovládání hlasitosti */
-.sound-control-group i.fa-times, 
-.sound-control-group i.fa-xmark {
-    display: none !important;
-}
-
-/* Tlačítko se zvukem */
+/* Tlačítko se zvukem - sjednocené styly */
 #soundToggle {
-    display: flex;
+    display: flex !important;
     align-items: center;
     justify-content: center;
     background: none;
     border: none;
     cursor: pointer;
     color: var(--text-secondary);
+    visibility: visible !important;
+    opacity: 1 !important;
 }
 
-/* Skryje ikonu 'volume-x' (křížek), když je zvuk aktivní */
-#soundToggle.is-playing [data-lucide="volume-x"] {
-    display: none;
+/* Když tlačítko HRAJE (má třídu .active), schováme křížek */
+#soundToggle.active [data-lucide="volume-x"] {
+    display: none !important;
 }
 
-/* Musíš mít v JS i druhou ikonu, např. 'volume-2', která se ukáže při hraní */
-#soundToggle:not(.is-playing) [data-lucide="volume-2"] {
-    display: none;
+/* Když tlačítko NEHRAJE (nemá třídu .active), schováme ikonu hlasitosti */
+#soundToggle:not(.active) [data-lucide="volume-2"] {
+    display: none !important;
+}
+
+/* Vynucení zobrazení šipky v selectu/tlačítku */
+[data-lucide="chevron-down"], 
+[data-lucide="arrow-down"] {
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
 }
 
 .logo-text { /* Obal svůj text v HTML do <span class="logo-text">Oáza</span> */
@@ -182,8 +187,59 @@ body {
 .sound-control-group {
     display: flex;
     align-items: center;
-    gap: 0.5rem;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid var(--card-border);
+    border-radius: 12px;
+    padding: 0.4rem 0.8rem;
+    gap: 0.8rem; /* Mírně zvětšeno */
+    position: relative; /* Přidáno */
+    z-index: 10;        /* Aby bylo nad ostatními prvky */
 }
+
+/* Základní vzhled tlačítka - vždy viditelné */
+#soundToggle {
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    background: none;
+    border: none;
+    cursor: pointer !important;
+    pointer-events: auto !important;
+    color: var(--text-secondary);
+    visibility: visible !important;
+    opacity: 1 !important;
+    padding: 5px;
+}
+
+/* Když HRAJE (.active), skryjeme křížek, ukážeme hlasitost */
+#soundToggle.active [data-lucide="volume-x"] {
+    display: none !important;
+}
+
+#soundToggle.active [data-lucide="volume-2"] {
+    display: block !important;
+}
+
+/* Když NEHRAJE, ukážeme křížek, skryjeme hlasitost */
+#soundToggle:not(.active) [data-lucide="volume-x"] {
+    display: block !important;
+}
+
+#soundToggle:not(.active) [data-lucide="volume-2"] {
+    display: none !important;
+}
+
+/* Zabránění přebíjení a zajištění klikatelnosti */
+#soundToggle {
+    position: relative;
+    z-index: 9999;
+}
+
+#soundToggle:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(192, 132, 252, 0.35);
+}
+
 
 .sound-control-group i {
     font-size: 1rem;
