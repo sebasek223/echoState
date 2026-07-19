@@ -328,7 +328,28 @@ if (soundToggleBtn) {
 
     // --- NOTIFIKACE ---
     const notificationStatus = document.getElementById('notificationStatus');
+    const btnQuickRelief = document.getElementById('btnQuickRelief');
+
+    // --- Rychlá úleva (1 klik) ---
+    if (btnQuickRelief) {
+        btnQuickRelief.addEventListener('click', () => {
+            // Preferujeme focus (nejrychlejší a nejuniverzálnější), jinak breathe.
+            switchTab('focus');
+            const focusTask = document.getElementById('focusTask');
+            if (focusTask && !focusTask.value.trim()) focusTask.value = 'Rychlá úleva';
+
+            const preset = document.querySelector('.btn-preset.active');
+            if (!preset) {
+                const preset10 = document.querySelector('.btn-preset[data-time="10"]');
+                preset10?.click();
+            }
+            const btnStartFocus = document.getElementById('btnStartFocus');
+            btnStartFocus?.click();
+        });
+    }
+
     if (notificationStatus) {
+
         if ('Notification' in window) {
             if (Notification.permission === 'granted') {
                 notificationStatus.textContent = '🔔 Připojeno';
