@@ -1,8 +1,14 @@
-# TODO - Oprava přehrávání zvuků (soundToggle)
+# TODO
 
-- [x] Upravit `apka/style.css`: odstranit duplicitní pravidla pro `#soundToggle`, zajistit viditelnost a klikatelnost a stabilní stav přes `.active`.
-- [x] Upravit `apka/app.js`: sjednotit logiku toggle (1 zdroj pravdy), přidat `audioCtx.resume()` před startem po kliknutí a vždy volat `lucide.createIcons()` po změně ikony.
-- [x] Ověřit: tlačítko je vždy viditelné a klikatelné, ikony se přepínají `volume-2`/`volume-x` a zvuk se spouští po prvním kliknutí.
+- [x] Vložit SOS tlačítko (`#sos-btn`) nad `<main>` v `index.html`.
+- [x] Vložit overlay blok (`#emergency-overlay`) úplně před `</body>` v `index.html`.
+
+- [x] Přidat CSS styly pro SOS modul na konec `style.css` (bez kolizí).
+- [x] Integrovat JS logiku SOS do `DOMContentLoaded` v `app.js` (start/stop breathing cycle).
+- [ ] Otestovat: otevření overlay, cyklus textů, zavření a zastavení intervalu.
+
+
+- [ ] (po úpravách níže) otestovat, že SOS modul je odstraněn z UI a nemá žádné zbytkové CSS/JS.
 
 
 

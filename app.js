@@ -1095,3 +1095,6 @@ if (soundToggleBtn) {
     if (quoteAuthor) quoteAuthor.textContent = `- ${dailyQuote.a}`;
 
 });
+
+
+
