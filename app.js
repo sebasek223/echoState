@@ -194,7 +194,7 @@ document.addEventListener('DOMContentLoaded', () => {
             audioCtx = new (window.AudioContext || window.webkitAudioContext)();
             masterGain = audioCtx.createGain();
             masterGain.connect(audioCtx.destination);
-            masterGain.gain.value = 0;
+            masterGain.gain.value = 0.3
         }
     }
 
@@ -330,23 +330,39 @@ if (soundToggleBtn) {
     const notificationStatus = document.getElementById('notificationStatus');
     const btnQuickRelief = document.getElementById('btnQuickRelief');
 
-    // --- Rychlá úleva (1 klik) ---
+    // --- Rychlá úleva (nejidelnejsi "za sebou") ---
+    // Záměr: user klikne jedním tlačítkem a aplikace provede krátkou sekvenci bez ručního nastavování.
+    // 1) Zvolí krátké dýchání (box breathing) na pozadí UI
+    // 2) Přejde na focus a spustí 5min focus timer
+    // 3) Před započetím focus uloží text úkolu, aby Zen overlay seděl
     if (btnQuickRelief) {
-        btnQuickRelief.addEventListener('click', () => {
-            // Preferujeme focus (nejrychlejší a nejuniverzálnější), jinak breathe.
+        btnQuickRelief.addEventListener('click', async () => {
+            // 1) Dýchání (rychlé 2 kola = ~16s, podle implementace je 4-4-4-4; start/stop je uživatelům friendly)
+            switchTab('breathe');
+
+            const breathBtn = document.getElementById('btnStartBreath');
+            if (breathBtn && !breathBtn.textContent.includes('Ukončit')) {
+                breathBtn.click();
+            }
+
+            // Krátká prodleva, aby uživatel viděl změnu stavu (není potřeba čekat přesně na tempo)
+            await new Promise(r => setTimeout(r, 2500));
+
+            // 2) Focus + spustit 5 minut
             switchTab('focus');
+
             const focusTask = document.getElementById('focusTask');
             if (focusTask && !focusTask.value.trim()) focusTask.value = 'Rychlá úleva';
 
-            const preset = document.querySelector('.btn-preset.active');
-            if (!preset) {
-                const preset10 = document.querySelector('.btn-preset[data-time="10"]');
-                preset10?.click();
-            }
+            // zvol preset 5min
+            const preset5 = document.querySelector('.btn-preset[data-time="5"]');
+            preset5?.click();
+
             const btnStartFocus = document.getElementById('btnStartFocus');
             btnStartFocus?.click();
         });
     }
+
 
     if (notificationStatus) {
 
