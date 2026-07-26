@@ -5,6 +5,38 @@
     --card-bg: rgba(255, 255, 255, 0.03);
     --card-border: rgba(255, 255, 255, 0.07);
     --card-border-hover: rgba(255, 255, 255, 0.15);
+    --text-primary: #f8fafc;
+    --text-secondary: #94a3b8;
+    --text-muted: #64748b;
+    --accent-blue: #3b82f6;
+    --accent-purple: #8b5cf6;
+    --accent-pink: #d946ef;
+    --accent-green: #10b981;
+    --accent-orange: #f97316;
+    --accent-red: #ef4444;
+    --gradient-primary: linear-gradient(135deg, #4f46e5, #c084fc);
+    --gradient-glow: linear-gradient(135deg, rgba(79, 70, 229, 0.15), rgba(192, 132, 252, 0.15));
+    --glass-blur: blur(25px);
+    --font-sans: 'Outfit', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    --transition-smooth: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Light mode overrides */
+.light-mode {
+    --bg-color: #f5f7fa;
+    --card-bg: rgba(255, 255, 255, 0.85);
+    --card-border: rgba(0, 0, 0, 0.12);
+    --card-border-hover: rgba(0, 0, 0, 0.2);
+    --text-primary: #111827;
+    --text-secondary: #374151;
+    --text-muted: #6b7280;
+    --gradient-primary: linear-gradient(135deg, #a78bfa, #f0abfc);
+}
+
+    --bg-color: #080914;
+    --card-bg: rgba(255, 255, 255, 0.03);
+    --card-border: rgba(255, 255, 255, 0.07);
+    --card-border-hover: rgba(255, 255, 255, 0.15);
     
     --text-primary: #f8fafc;
     --text-secondary: #94a3b8;
@@ -428,7 +460,35 @@ body {
     grid-column: 2 / span 10;
 }
 
-@media (max-width: 1024px) {
+@media (max-width: 768px) {
+    .home-grid {
+        grid-template-columns: 1fr;
+    }
+    .welcome-card, .garden-card {
+        grid-column: 1 / -1;
+    }
+    .home-stats-row {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    .tab-navigation {
+        flex-direction: row;
+        overflow-x: auto;
+    }
+    .tab-row {
+        flex-wrap: nowrap;
+    }
+    .tab-btn {
+        flex: 0 0 auto;
+        padding: 0.6rem 1rem;
+    }
+    .card {
+        padding: 1.5rem;
+    }
+    .app-header, .app-container {
+        padding: 1rem;
+    }
+}
+
     .welcome-card,
     .garden-card {
         grid-column: 1 / -1;

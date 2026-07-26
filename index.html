@@ -35,7 +35,7 @@
         <header class="app-header">
             <div class="header-left">
                 <div class="logo">
-    <i class="fas fa-leaf logo-icon"></i>
+    <i data-lucide="leaf" class="logo-icon" aria-hidden="true"></i>
     <span class="logo-text">Oáza</span>
 </div>
                 <span class="header-greeting" id="headerGreeting">Toto je tvé místo pro klidnou hlavu...</span>
@@ -56,7 +56,8 @@
                 </button>
                 <div class="time-widget" id="timeWidget">17:08</div>
                 <div class="notification-status" id="notificationStatus" title="Stav oznámení">🔔 Nepřipojeno</div>
-        <button class="btn btn-secondary" id="btnQuickRelief" type="button">Rychlá úleva</button>
+                <button class="btn btn-secondary" id="btnQuickRelief" type="button">Rychlá úleva</button>
+                <button class="btn btn-secondary" id="btnNeedExhale" type="button">🌿 Potřebuji vydechnout</button>
 
 
 
@@ -507,6 +508,24 @@
             </div>
 
         </main>
+
+        <!-- SOS OVERLAY -->
+        <div class="sos-overlay" id="sosOverlay" aria-hidden="true">
+            <div class="sos-panel" role="dialog" aria-modal="true" aria-labelledby="sosTitle">
+                <button class="btn-icon btn-sos-close" id="btnCloseSos" type="button" title="Zavřít">✕</button>
+
+                <div class="sos-breath-visual">
+                    <div class="sos-breath-circle" id="sosBreathCircle" aria-hidden="true"></div>
+                    <div class="sos-breath-text" id="sosBreathText" aria-live="polite">NÁDECH</div>
+                </div>
+
+                <div class="sos-subtext" id="sosSubtext">Box breathing 4–4–4–4 (16s cyklus)</div>
+
+                <div class="sos-actions">
+                    <button class="btn btn-secondary" type="button" id="btnSosAttention">Potřebuji spíš odvést pozornost</button>
+                </div>
+            </div>
+        </div>
 
         <!-- ZEN MODE OVERLAY -->
         <div class="zen-overlay" id="zenOverlay">
